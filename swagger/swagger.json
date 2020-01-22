@@ -118,7 +118,35 @@
               "$ref": "#/definitions/UpdateOrder"
             }
           }
-        ]
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteInventory"
+            }
+          },
+          "204": {
+            "description": "No order found"
+          },
+          "401": {
+            "description": "Validation error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "delete": {
         "tags": [

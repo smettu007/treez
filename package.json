@@ -4,7 +4,7 @@
   "description": "api layer",
   "main": "index.js",
   "scripts": {
-    "swagger": "js-yaml ./swagger/swagger.yaml > ./swagger/swagger.json",
+    "swagger": "js-yaml swagger/swagger.yaml > swagger/swagger.json",
     "start": "npm run swagger && NODE_ENV=dev & nodemon index.js",
     "test": "nyc mocha tests/routes/*.js"
   },
