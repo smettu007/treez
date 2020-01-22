@@ -1,7 +1,8 @@
 const routes = require("../constants/routes");
 const swaggerUi = require('swagger-ui-express');
-const swaggerDoc = require('../swagger/swagger.json');
-
+const fs = require('fs');
+const path = require('path');
+const swaggerDoc = require(path.resolve(__dirname, "../swagger/swagger.json"));
 module.exports = app => {
 
   // lifecycle checks
