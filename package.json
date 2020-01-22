@@ -1,19 +1,17 @@
 {
-  "name": "share-api",
+  "name": "api",
   "version": "0.0.1",
   "description": "api layer",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js && npm run swagger",
     "swagger": "js-yaml ./swagger/swagger.yaml > ./swagger/swagger.json",
-    "dev": "npm run swagger && NODE_ENV=dev & nodemon index.js",
+    "start": "npm run swagger && NODE_ENV=dev & nodemon index.js",
     "test": "nyc mocha tests/routes/*.js"
   },
   "engines": {
     "node": "10.x",
     "npm": "6.x"
   },
-  "author": "subbu",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
