@@ -1,0 +1,601 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Treez documentation",
+    "version": "1.0.0",
+    "title": "Swagger Treez"
+  },
+  "tags": [
+    {
+      "name": "Inventories",
+      "description": "CURD Inventories"
+    },
+    {
+      "name": "Orders",
+      "description": "CURD Orders"
+    }
+  ],
+  "paths": {
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get all Orders",
+        "description": "Get details of all orders",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Orders Fetched",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }
+          },
+          "204": {
+            "description": "No orders found"
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create an Order",
+        "description": "Post an order to db",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created Inventory object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateOrder"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order Created",
+            "schema": {
+              "$ref": "#/definitions/OrderCreated"
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Route not found"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update an order",
+        "descriptions": "Update an order from the db and update inventory as needed",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "order id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "update order body",
+            "schema": {
+              "$ref": "#/definitions/UpdateOrder"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Cancel an order",
+        "descriptions": "Cancel an order from the db and refund order quantity to inventory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "order id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteInventory"
+            }
+          },
+          "204": {
+            "description": "No order found"
+          },
+          "401": {
+            "description": "Validation error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get details of an Order",
+        "descriptions": "fetch details about an Order from db",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Order id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/OrderCreated"
+            }
+          },
+          "204": {
+            "description": "No order found"
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/inventories": {
+      "get": {
+        "tags": [
+          "Inventories"
+        ],
+        "summary": "Get list of all inventories",
+        "description": "Returns a list of available inventories",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Inventories"
+            }
+          },
+          "204": {
+            "description": "No inventories found"
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Inventories"
+        ],
+        "summary": "Create an inventory",
+        "description": "Post an inventory entry in db",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created Inventory object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InventoriesPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/inventories/{id}": {
+      "get": {
+        "tags": [
+          "Inventories"
+        ],
+        "summary": "Get details of an inventory",
+        "descriptions": "fetch details about an inventory from db",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "inventory id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Inventory"
+            }
+          },
+          "204": {
+            "description": "No inventory found"
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Inventories"
+        ],
+        "summary": "Delete a inventory",
+        "descriptions": "Delete a inventory from the db",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "inventory id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteInventory"
+            }
+          },
+          "204": {
+            "description": "No inventory found"
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Inventories"
+        ],
+        "summary": "Update a inventory",
+        "descriptions": "update a inventory from the db",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "inventory id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "summary": "update body",
+            "description": "update details of the inventory",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InventoriesPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation and returns updated object data",
+            "schema": {
+              "$ref": "#/definitions/Inventory"
+            }
+          },
+          "204": {
+            "description": "No inventory found"
+          },
+          "404": {
+            "description": "Route not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UpdateOrder": {
+      "type": "object",
+      "properties": {
+        "inventories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "inventory": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "description": "quantity ordered"
+                  }
+                }
+              }
+            }
+          },
+          "date": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "OrderCreated": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "inventory": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number",
+                  "description": "quantity ordered"
+                }
+              }
+            }
+          }
+        },
+        "date": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateOrder": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "inventories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "email",
+        "quantity",
+        "inventories"
+      ]
+    },
+    "DeleteInventory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "cancelledDate": {
+          "type": "string"
+        }
+      }
+    },
+    "Inventory": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "quantity": {
+          "type": "number"
+        }
+      }
+    },
+    "Inventories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "InventoriesPost": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minlength": "3,",
+          "maxlength": "10,"
+        },
+        "description": {
+          "type": "string",
+          "minlength": "3,",
+          "maxlength": 500
+        },
+        "price": {
+          "type": "number",
+          "min": 0
+        },
+        "quantity": {
+          "type": "number",
+          "min": 0
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "price",
+        "quantity"
+      ]
+    }
+  }
+}
